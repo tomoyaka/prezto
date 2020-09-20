@@ -11,3 +11,57 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
+
+# git
+compdef g=git
+
+# peco
+function peco-select-history() {
+    local tac
+    if which tac > /dev/null; then
+        tac="tac"
+    else
+        tac="tail -r"
+    fi
+    BUFFER=$(\history -n 1 | \
+        eval $tac | \
+        peco --query "$LBUFFER")
+    CURSOR=$#BUFFER
+    zle clear-screen
+}
+zle -N peco-select-history
+bindkey '^r' peco-select-history
+
+# function peco-src () {
+#   local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
+#   if [ -n "$selected_dir" ]; then
+#     BUFFER="cd ${selected_dir}"
+#     zle accept-line
+#   fi
+#   zle clear-screen
+# }
+# zle -N peco-src
+# bindkey '^[' peco-src
+
+# alias
+alias repos='ghq list -p | peco'
+alias repo='cd $(repos)'
+
+# nodebrew
+export PATH=$HOME/.nodebrew/current/bin:$PATH
+
+# Google Cloud SDK
+source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
+source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
+
+# java
+export PATH=$PATH:/Library/Java/JavaVirtualMachines/openjdk-12.0.1.jdk/Contents/Home/bin
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-12.0.1.jdk/Contents/Home
+
+# direnv
+eval "$(direnv hook zsh)"
+
+export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
+export PATH="/usr/local/opt/sqlite/bin:$PATH"
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
