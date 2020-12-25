@@ -12,6 +12,10 @@ fi
 
 # Customize to your needs...
 
+# zplug
+export ZPLUG_HOME=/usr/local/opt/zplug
+source $ZPLUG_HOME/init.zsh
+
 # git
 compdef g=git
 
@@ -65,3 +69,4 @@ export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
 export PATH="/usr/local/opt/sqlite/bin:$PATH"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+export PATH="/usr/local/opt/mysql-client/bin:$PATH"
