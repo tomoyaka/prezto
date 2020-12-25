@@ -10,11 +10,26 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+
 # Customize to your needs...
 
 # zplug
 export ZPLUG_HOME=/usr/local/opt/zplug
 source $ZPLUG_HOME/init.zsh
+
+zplug "b4b4r07/emoji-cli"
+
+## Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+
+## Then, source plugins and add commands to $PATH
+zplug load --verbose
+
 
 # git
 compdef g=git
@@ -47,20 +62,26 @@ bindkey '^r' peco-select-history
 # zle -N peco-src
 # bindkey '^[' peco-src
 
+
 # alias
 alias repos='ghq list -p | peco'
 alias repo='cd $(repos)'
+alias gle='git log --oneline --color | emojify | less -r'
+alias ncz='npm run commit'
 
 # nodebrew
 export PATH=$HOME/.nodebrew/current/bin:$PATH
+
 
 # Google Cloud SDK
 source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
 source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
 
+
 # java
 export PATH=$PATH:/Library/Java/JavaVirtualMachines/openjdk-12.0.1.jdk/Contents/Home/bin
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-12.0.1.jdk/Contents/Home
+
 
 # direnv
 eval "$(direnv hook zsh)"
